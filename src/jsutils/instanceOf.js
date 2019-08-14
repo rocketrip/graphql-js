@@ -16,8 +16,12 @@ declare function instanceOf(
   constructor: mixed,
 ): boolean %checks(value instanceof constructor);
 
-export default (process && process.env.NODE_ENV !== 'production'
+export default (process.env.NODE_ENV === 'production'
   ? // eslint-disable-next-line no-shadow
+    function instanceOf(value: any, constructor: any) {
+      return value instanceof constructor;
+    }
+  : // eslint-disable-next-line no-shadow
     function instanceOf(value: any, constructor: any) {
       if (value instanceof constructor) {
         return true;
@@ -43,8 +47,4 @@ spurious results.`,
         }
       }
       return false;
-    }
-  : // eslint-disable-next-line no-shadow
-    function instanceOf(value: any, constructor: any) {
-      return value instanceof constructor;
     });
